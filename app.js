@@ -20,9 +20,24 @@ app.use(logger('dev'));
 
 mongoose.Promise = require('bluebird');
 
-mongoose.connect(config.DBHost);
+const options = {
+  server: {
+    socketOptions: {
+      keepAlive: 300000,
+      connectTimeoutMS: 30000
+    }
+  },
+  replset: {
+    socketOptions: {
+      keepAlive: 300000,
+      connectTimeoutMS : 30000
+    }
+  }
+};
 
-var db = mongoose.connection;
+mongoose.connect(config.DBHost, options);
+
+const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
 app.use(passport.initialize());
