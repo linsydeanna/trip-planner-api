@@ -18,6 +18,9 @@ const expressJWT = require('express-jwt');
 const app = express();
 app.use(logger('dev'));
 
+app.use(jsonParser.json());
+app.use(jsonParser.urlencoded({ extended: false }));
+
 mongoose.Promise = require('bluebird');
 
 const options = {
@@ -41,9 +44,6 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
 app.use(passport.initialize());
-
-app.use(jsonParser.json());
-app.use(jsonParser.urlencoded({ extended: false }));
 
 app.use(expressJWT({ secret: 'shhh' }).unless({ path: ['/trip-planner/', '/trip-planner/users', '/trip-planner/login'] }));
 
