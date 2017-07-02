@@ -11,7 +11,6 @@ const routes = require('./routes');
 const User = require('./user');
 const logger = require('morgan');
 
-// const config = require('config');
 const passport = require('passport');
 const expressJWT = require('express-jwt');
 
@@ -23,22 +22,7 @@ app.use(jsonParser.urlencoded({ extended: false }));
 
 mongoose.Promise = require('bluebird');
 
-const options = {
-  server: {
-    socketOptions: {
-      keepAlive: 300000,
-      connectTimeoutMS: 30000
-    }
-  },
-  replset: {
-    socketOptions: {
-      keepAlive: 300000,
-      connectTimeoutMS : 30000
-    }
-  }
-};
-
-mongoose.connect(process.env.DB_HOST, options);
+mongoose.connect(process.env.DB_HOST);
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
