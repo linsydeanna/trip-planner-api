@@ -1,3 +1,0 @@
-{
-    "DBHost": process.env.DBHost
-}

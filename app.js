@@ -11,7 +11,7 @@ const routes = require('./routes');
 const User = require('./user');
 const logger = require('morgan');
 
-const config = require('config');
+// const config = require('config');
 const passport = require('passport');
 const expressJWT = require('express-jwt');
 
@@ -38,7 +38,7 @@ const options = {
   }
 };
 
-mongoose.connect(config.DBHost, options);
+mongoose.connect(process.env.DB_HOST, options);
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));

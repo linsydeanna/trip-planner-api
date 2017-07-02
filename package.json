@@ -4,8 +4,8 @@
   "description": "",
   "main": "bin/www",
   "scripts": {
-    "test": "export NODE_ENV=test && mocha tests.js",
-    "start": "export NODE_ENV=production && node bin/www"
+    "test": "env DB_HOST=mongodb://localhost:27017/test mocha tests.js",
+    "start": "env DB_HOST=mongodb://localhost:27017/trip-planner node bin/www"
   },
   "keywords": [],
   "author": "",
