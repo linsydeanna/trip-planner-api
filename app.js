@@ -38,10 +38,6 @@ const options = {
   }
 };
 
-console.log("config.DBHost is ", config.DBHost)
-
-console.log("CONFIG ENV is ", config.util.getEnv('NODE_ENV'))
-
 mongoose.connect(config.DBHost, options);
 
 const db = mongoose.connection;
