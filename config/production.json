@@ -1,0 +1,3 @@
+{
+    "DBHost": "mongodb://admin:takeatrip@ds143342.mlab.com:43342/trip-planner-db"
+}
