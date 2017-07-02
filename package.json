@@ -5,7 +5,7 @@
   "main": "bin/www",
   "scripts": {
     "test": "export NODE_ENV=test && mocha tests.js",
-    "start": "export NODE_ENV=dev && node bin/www"
+    "start": "export NODE_ENV=production && node bin/www"
   },
   "keywords": [],
   "author": "",

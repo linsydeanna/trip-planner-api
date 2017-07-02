@@ -37,8 +37,12 @@ const options = {
     }
   }
 };
+process.env.NODE_ENV = 'production'
+console.log("config.DBHost is ", config.DBHost)
 
-mongoose.connect(config.DBHost, options);
+console.log("process.env.NODE_ENV is ", process.env.NODE_ENV)
+
+mongoose.connect("mongodb://admin:takeatrip@ds143342.mlab.com:43342/trip-planner-db", options);
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
