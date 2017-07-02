@@ -38,7 +38,6 @@ const options = {
   }
 };
 
-// process.env.NODE_ENV = 'production';
 console.log("config.DBHost is ", config.DBHost)
 
 console.log("CONFIG ENV is ", config.util.getEnv('NODE_ENV'))
