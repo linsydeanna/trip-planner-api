@@ -43,9 +43,7 @@ describe('Request to the users path', function() {
       .post('/trip-planner/users')
       .set('Content-Type', 'application/json')
       .send(payload)
-      .expect(201, {
-        body: 'test'
-      }, done)
+      .expect(201, done)
   });
 });
 
@@ -59,9 +57,7 @@ describe('Request to the login path', function() {
       .post('/trip-planner/login')
       .set('Content-Type', 'application/json')
       .send(payload)
-      .expect(200, {
-        body: 'test'
-      }, done)
+      .expect(200, done)
   });
 
   const passwordPayload = {

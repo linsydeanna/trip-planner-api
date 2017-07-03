@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 
-const authenticate = passport.authenticate('local', { session: false });
+// const authenticate = passport.authenticate('local', { session: false });
 
 router.get('/', function(req, res, next) {
   res.send('OK');
@@ -27,7 +27,10 @@ router.post('/users', function(req, res, next) {
           if (error) {
             return next(error);
           } else {
-            res.status(201).json({ body: 'test' });
+            res.status(201).json({
+              token: jwt.sign({ username: req.body.username }, 'shhh'),
+              email: user.email,
+            });
           }
         });
       } else {
@@ -49,9 +52,28 @@ router.post('/users', function(req, res, next) {
   }
 });
 
-router.post('/login', authenticate, function(req, res, next) {
-  const token = jwt.sign({ username: req.body.username }, 'shhh')
-  res.json({ body: 'test' });
+router.post('/login', function(req, res, next) {
+  if (!req.body.username || !req.body.password) {
+    const err = new Error('Username and password are required.')
+    err.status = 400;
+    return next(err);
+  } else {
+    const authenticate = passport.authenticate('local', function(err, user, info) {
+      if (err) {
+        return next(err);
+      };
+      if (user) {
+        return res.status(200).json({
+          token: jwt.sign({ username: req.body.username }, 'shhh'),
+          email: user.email,
+        });
+      };
+      if (!user) {
+        return res.status(401).json(info);;
+      };
+    });
+    return authenticate(req, res);
+  }
 });
 
 module.exports = router;
