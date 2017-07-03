@@ -4,7 +4,7 @@
   "description": "",
   "main": "bin/www",
   "scripts": {
-    "test": "env DB_HOST=mongodb://localhost:27017/test mocha tests.js",
+    "test": "env DB_HOST=mongodb://localhost:27017/test NODE_ENV=test mocha tests.js",
     "start": "env DB_HOST=mongodb://localhost:27017/trip-planner nodemon bin/www"
   },
   "keywords": [],

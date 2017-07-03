@@ -15,7 +15,10 @@ const passport = require('passport');
 const expressJWT = require('express-jwt');
 
 const app = express();
-app.use(logger('dev'));
+
+if (process.env.NODE_ENV !== 'test') {
+  app.use(logger('dev'));
+};
 
 app.use(jsonParser.json());
 app.use(jsonParser.urlencoded({ extended: false }));
