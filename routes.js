@@ -2,6 +2,7 @@
 
 const express = require('express');
 const User = require('./user');
+const Trip = require('./trip');
 const passport = require('./passport');
 const jwt = require('jsonwebtoken');
 
@@ -73,7 +74,20 @@ router.post('/login', function(req, res, next) {
       };
     });
     return authenticate(req, res);
-  }
+  };
+});
+
+router.post('/trips', function(req, res, next) {
+  const newTrip = {
+    name: req.body.name
+  };
+  Trip.create(newTrip, function (error, trip) {
+    if (error) {
+      return next(error);
+    } else {
+      return res.status(201).json({ id: 'someidhere' });
+    };
+  });
 });
 
 module.exports = router;

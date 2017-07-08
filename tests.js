@@ -106,3 +106,17 @@ describe('Request to the login path', function() {
       .expect(401, done)
   });
 });
+
+describe('Request to the trips path', function() {
+  const payload = {
+    username: "testusername",
+    name: "Test Trip Name 2017"
+  };
+  it('returns 200 status code', function(done) {
+    request(app)
+      .post('/trip-planner/trips')
+      .set('Content-Type', 'application/json')
+      .send(payload)
+      .expect(201, done)
+  });
+});

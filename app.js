@@ -32,7 +32,9 @@ db.on('error', console.error.bind(console, 'connection error:'));
 
 app.use(passport.initialize());
 
-app.use(expressJWT({ secret: 'shhh' }).unless({ path: ['/trip-planner/', '/trip-planner/users', '/trip-planner/login'] }));
+const ignoredPaths = ['/trip-planner/', '/trip-planner/users', '/trip-planner/login', '/trip-planner/logout', '/trip-planner/trips'];
+
+app.use(expressJWT({ secret: 'shhh' }).unless({ path: ignoredPaths }));
 
 app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
