@@ -17,7 +17,8 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true
-  }
+  },
+  trips: Array
 });
 
 UserSchema.methods.validPassword = (password, hash) => bcrypt.compareSync(password, hash);

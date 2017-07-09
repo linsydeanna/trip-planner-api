@@ -1,6 +1,7 @@
 const request = require('supertest');
 const { app } = require('./app');
 const User = require('./user');
+const Trip = require('./trip');
 
 describe('Request to the root path', function() {
   it('returns 200 status code', function(done) {
@@ -34,7 +35,7 @@ describe('Request to the users path', function() {
     confirmPassword: "testpassword"
   };
   beforeEach(done => {
-    User.remove({}, (err) => {
+    User.remove({ username: "testusername" }, (err) => {
        done();
     });
   });
@@ -108,9 +109,19 @@ describe('Request to the login path', function() {
 });
 
 describe('Request to the trips path', function() {
+  beforeEach(done => {
+    Trip.remove({ name: "Test Trip Name 2017" }, (err) => {
+       done();
+    });
+    User.update({ username: "test2" },
+      { $set: { trips: [] } },
+      { upsert: true })
+  });
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QyIiwiaWF0IjoxNDk5NTY2Njg4fQ.7HMrRQ_XTpjiB33ZuMiY44BMwbhm0VFk0aS2cv2PzaI"
   const payload = {
-    username: "testusername",
-    name: "Test Trip Name 2017"
+    username: "test2",
+    name: "Test Trip Name 2017",
+    token: token
   };
   it('returns 200 status code', function(done) {
     request(app)

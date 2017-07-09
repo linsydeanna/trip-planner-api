@@ -8,8 +8,6 @@ const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 
-// const authenticate = passport.authenticate('local', { session: false });
-
 router.get('/', function(req, res, next) {
   res.send('OK');
 });
@@ -35,33 +33,33 @@ router.post('/users', function(req, res, next) {
           }
         });
       } else {
-        const err = new Error('Username already exists.')
-        err.status = 409;
-        return next(err);
+        const error = new Error('Username already exists.')
+        error.status = 409;
+        return next(error);
       }
     });
 
     if (req.body.password !== req.body.confirmPassword) {
-      const err = new Error('Passwords do not match.')
-      err.status = 400;
-      return next(err);
+      const error = new Error('Passwords do not match.')
+      error.status = 400;
+      return next(error);
     }
   } else {
-    const err = new Error('All fields required.');
-    err.status = 400;
-    return next(err);
+    const error = new Error('All fields required.');
+    error.status = 400;
+    return next(error);
   }
 });
 
 router.post('/login', function(req, res, next) {
   if (!req.body.username || !req.body.password) {
-    const err = new Error('Username and password are required.')
-    err.status = 400;
-    return next(err);
+    const error = new Error('Username and password are required.')
+    error.status = 400;
+    return next(error);
   } else {
-    const authenticate = passport.authenticate('local', function(err, user, info) {
-      if (err) {
-        return next(err);
+    const authenticate = passport.authenticate('local', function(error, user, info) {
+      if (error) {
+        return next(error);
       };
       if (user) {
         return res.status(200).json({
@@ -78,15 +76,30 @@ router.post('/login', function(req, res, next) {
 });
 
 router.post('/trips', function(req, res, next) {
-  const newTrip = {
-    name: req.body.name
-  };
-  Trip.create(newTrip, function (error, trip) {
+  jwt.verify(req.body.token, 'shhh', function(error, decoded) {
     if (error) {
-      return next(error);
+      return next(error)
     } else {
-      return res.status(201).json({ id: 'someidhere' });
-    };
+      const newTrip = {
+        name: req.body.name
+      };
+      Trip.create(newTrip, function (error, trip) {
+        if (error) {
+          return next(error);
+        } else {
+          User.update({ username: req.body.username },
+            { $push: { trips: trip.id } },
+            { upsert: true },
+            function (error) {
+              if (error) {
+                return next(error);
+              } else {
+                return res.status(201).json({ id: trip.id });
+              };
+            });
+        };
+      });
+    }
   });
 });
 
