@@ -108,24 +108,21 @@ describe('Request to the login path', function() {
   });
 });
 
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QyIiwiaWF0IjoxNDk5NTY2Njg4fQ.7HMrRQ_XTpjiB33ZuMiY44BMwbhm0VFk0aS2cv2PzaI"
+
 describe('Request to the trips path', function() {
   beforeEach(done => {
     Trip.remove({ name: "Test Trip Name 2017" }, (err) => {
        done();
     });
-    User.update({ username: "test2" },
-      { $set: { trips: [] } },
-      { upsert: true })
+    User.update({ _id: '59619260063760177cdcd27c' },
+      { $set: { trips: [] } }).exec();
   });
-
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QyIiwiaWF0IjoxNDk5NTY2Njg4fQ.7HMrRQ_XTpjiB33ZuMiY44BMwbhm0VFk0aS2cv2PzaI"
-
   const tripPayload = {
     username: "test2",
     name: "Test Trip Name 2017",
     token: token
   };
-
   it('returns 201 status code when posting a new trip', function(done) {
     request(app)
       .post('/trip-planner/trips')
@@ -133,13 +130,14 @@ describe('Request to the trips path', function() {
       .send(tripPayload)
       .expect(201, done)
   });
+});
 
+describe('Request to the trips path', function() {
   it('returns 200 status code when getting trips for a user', function(done) {
     request(app)
       .get('/trip-planner/trips/59619260063760177cdcd27c')
       .set('Content-Type', 'application/json')
       .set('Authorization', `Bearer ${token}`)
-      .expect(200, { trips: ['some trips'] }, done)
+      .expect(200, done)
   });
-
 });

@@ -82,9 +82,20 @@ router.get('/trips/:userId', function(req, res, next) {
     if (error) {
       return next(error)
     } else {
-      // get all trips for user id
-       return res.status(200).json({ trips: ['some trips'] });
-    }
+      User.findOne({ _id: req.params.userId }, function(error, user) {
+        if (error) {
+          return next(error)
+        } else {
+          Trip.find({ '_id': { $in: user.trips } }, function(error, trips) {
+            if (error) {
+              return next(error);
+            } else {
+              return res.status(200).json({ trips: trips });
+            };
+          });
+        };
+      });
+    };
   });
 });
 
