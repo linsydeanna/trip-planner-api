@@ -32,15 +32,21 @@ db.on('error', console.error.bind(console, 'connection error:'));
 
 app.use(passport.initialize());
 
-const ignoredPaths = ['/trip-planner/', '/trip-planner/users', '/trip-planner/login', '/trip-planner/logout', '/trip-planner/trips'];
+const ignoredPaths = [
+  '/trip-planner/',
+  '/trip-planner/users',
+  '/trip-planner/login',
+  '/trip-planner/logout',
+  '/trip-planner/trips'
+];
 
 app.use(expressJWT({ secret: 'shhh' }).unless({ path: ignoredPaths }));
 
 app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
     if (req.method === 'OPTIONS') {
-        res.header('Access-Control-Allow-Methods', 'PUT, POST, DELETE');
+        res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, PATCH');
         return res.status(200).json({});
     };
     next();

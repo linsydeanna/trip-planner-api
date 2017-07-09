@@ -117,17 +117,29 @@ describe('Request to the trips path', function() {
       { $set: { trips: [] } },
       { upsert: true })
   });
+
   const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QyIiwiaWF0IjoxNDk5NTY2Njg4fQ.7HMrRQ_XTpjiB33ZuMiY44BMwbhm0VFk0aS2cv2PzaI"
-  const payload = {
+
+  const tripPayload = {
     username: "test2",
     name: "Test Trip Name 2017",
     token: token
   };
-  it('returns 200 status code', function(done) {
+
+  it('returns 201 status code when posting a new trip', function(done) {
     request(app)
       .post('/trip-planner/trips')
       .set('Content-Type', 'application/json')
-      .send(payload)
+      .send(tripPayload)
       .expect(201, done)
   });
+
+  it('returns 200 status code when getting trips for a user', function(done) {
+    request(app)
+      .get('/trip-planner/trips/59619260063760177cdcd27c')
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200, { trips: ['some trips'] }, done)
+  });
+
 });

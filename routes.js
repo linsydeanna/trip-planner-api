@@ -75,6 +75,19 @@ router.post('/login', function(req, res, next) {
   };
 });
 
+router.get('/trips/:userId', function(req, res, next) {
+  const str = req.headers.authorization;
+  const token = str.substr(str.indexOf(' ') + 1);
+  jwt.verify(token, 'shhh', function(error, decoded) {
+    if (error) {
+      return next(error)
+    } else {
+      // get all trips for user id
+       return res.status(200).json({ trips: ['some trips'] });
+    }
+  });
+});
+
 router.post('/trips', function(req, res, next) {
   jwt.verify(req.body.token, 'shhh', function(error, decoded) {
     if (error) {
